@@ -3869,25 +3869,7 @@ AddCommand("time", {"settime"}, "sets the games time", {{"night", "day", "dawn"}
     Lighting.ClockTime = Times[Time] or Time
 end)
 
-AddCommand("fling", {"stan"}, "teleports to a player for a few seconds and returns", {}, function(Caller, Args)
-    local Target = GetPlayer(Args[1])
-    if not Target then
-        return
-    end
 
-    local Root = GetRoot()
-    local OldPos = Root.CFrame
-
-    for _, v in ipairs(Target) do
-        local TargetRoot = GetRoot(v)
-        local TargetPos = TargetRoot.Position
-        Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 10, 0))
-
-        wait(3) -- Teleport for 3 seconds
-
-        Root.CFrame = OldPos -- Return to original position
-    end
-end)
 
 AddCommand("fling", {"FLING"}, {"/e fling"}, "teleports to a player repeatedly for a few seconds", {}, function(Caller, Args)
     local Target = GetPlayer(Args[1])
@@ -3903,7 +3885,7 @@ AddCommand("fling", {"FLING"}, {"/e fling"}, "teleports to a player repeatedly f
         for _, v in ipairs(Target) do
             local TargetRoot = GetRoot(v)
             local TargetPos = TargetRoot.Position
-            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 0, 0))
+            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 1, 0))
         end
         wait()
     until tick() - startTime >= 3
