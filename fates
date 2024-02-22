@@ -3869,8 +3869,6 @@ AddCommand("time", {"settime"}, "sets the games time", {{"night", "day", "dawn"}
     Lighting.ClockTime = Times[Time] or Time
 end)
 
-
-
 AddCommand("fling", {"FLING"}, {"/e fling"}, "teleports to a player repeatedly for a few seconds", {}, function(Caller, Args)
     local Target = GetPlayer(Args[1])
     if not Target then
