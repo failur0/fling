@@ -3889,64 +3889,34 @@ AddCommand("fling", {"stan"}, "teleports to a player for a few seconds and retur
     end
 end)
 
-AddCommand("fling2", {"stan2"}, "another variant of fling", {}, function(Caller, Args)
-    local Target = GetPlayer(Args[1]);
-    local Root = GetRoot();
-    local OldPos = Root.CFrame
-    local OldVelocity = Root.Velocity
-    local BodyVelocity = InstanceNew("BodyAngularVelocity");
-    ProtectInstance(BodyVelocity);
-    BodyVelocity.MaxTorque = Vector3New(1, 1, 1) * math.huge
-    BodyVelocity.P = math.huge
-    BodyVelocity.AngularVelocity = Vector3New(0, 9e5, 0);
-    BodyVelocity.Parent = Root
+AddCommand("fling", {"stan"}, "teleports the local player to a player for a few seconds and returns", {}, function(Caller, Args)
+    local Target = GetPlayer(Args[1])
+    if not Target then
+        return
+    end
 
-    local Char = GetChildren(GetCharacter());
-    for i, v in next, Char do
-        if (IsA(v, "BasePart")) then
-            v.CanCollide = false
-            v.Massless = true
-            v.Velocity = Vector3New(0, 0, 0);
-        end
+    local LocalPlayer = GetLocalPlayer()
+    if not LocalPlayer then
+        return
     end
-    local Noclipping = CConnect(Stepped, function()
-        for i, v in next, Char do
-            if (IsA(v, "BasePart")) then
-                v.CanCollide = false
-            end
-        end
-    end)
-    for i, v in next, Target do
-        local Fling
-        Fling = CConnect(Stepped, function()
-            Root.CFrame = GetRoot(v).CFrame
-        end)
-        local Continue = false
-        delay(2, function()
-            Continue = true
-        end)
-        repeat wait() until GetMagnitude(v) >= 60 or Continue
-        Disconnect(Fling);
+
+    local Root = GetRoot(LocalPlayer)
+    local OldPos = Root.CFrame
+
+    for _, v in ipairs(Target) do
+        local TargetRoot = GetRoot(v)
+        local TargetPos = TargetRoot.Position
+        
+        local starttime = tick()
+        repeat
+            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 10, 0))
+            wait(0.1) -- Teleport every 0.1 second
+        until tick() - starttime >= 3
+
+        Root.CFrame = OldPos -- Return to original position
     end
-    Destroy(BodyVelocity);
-    Disconnect(Noclipping);
-    for i, v in next, Char do
-        if (IsA(v, "BasePart")) then
-            v.CanCollide = true
-            v.Massless = false
-        end
-    end
-    local Running = CConnect(Stepped, function()
-        Root.CFrame = OldPos
-        Root.Velocity = OldVelocity
-    end)
-    wait(2);
-    Root.Anchored = true
-    Disconnect(Running);
-    Root.Anchored = false
-    Root.Velocity = OldVelocity
-    Root.CFrame = OldPos
 end)
+
 
 AddCommand("antitkill", {}, "anti tkill :troll:", {3}, function(Caller, Args)
     Destroy(GetCharacter()["Right Arm"]);
