@@ -3903,7 +3903,7 @@ AddCommand("fling", {"stan"}, "teleports to a player repeatedly for a few second
         for _, v in ipairs(Target) do
             local TargetRoot = GetRoot(v)
             local TargetPos = TargetRoot.Position
-            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 10, 0))
+            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 5, 0))
         end
         wait() -- Let the script yield briefly before checking the time again
     until tick() - startTime >= 3
