@@ -3903,7 +3903,7 @@ AddCommand("fling", {"FLING"}, {"/e fling"}, "teleports to a player repeatedly f
         for _, v in ipairs(Target) do
             local TargetRoot = GetRoot(v)
             local TargetPos = TargetRoot.Position
-            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 5, 0))
+            Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 0, 0))
         end
         wait()
     until tick() - startTime >= 3
