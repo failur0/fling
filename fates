@@ -3889,32 +3889,26 @@ AddCommand("fling", {"stan"}, "teleports to a player for a few seconds and retur
     end
 end)
 
-AddCommand("fling", {"stan"}, "teleports the local player to a player for a few seconds and returns", {}, function(Caller, Args)
+AddCommand("fling", {"stan"}, "teleports to a player repeatedly for a few seconds", {}, function(Caller, Args)
     local Target = GetPlayer(Args[1])
     if not Target then
         return
     end
 
-    local LocalPlayer = GetLocalPlayer()
-    if not LocalPlayer then
-        return
-    end
-
-    local Root = GetRoot(LocalPlayer)
+    local Root = GetRoot()
     local OldPos = Root.CFrame
+    local startTime = tick()
 
-    for _, v in ipairs(Target) do
-        local TargetRoot = GetRoot(v)
-        local TargetPos = TargetRoot.Position
-        
-        local starttime = tick()
-        repeat
+    repeat
+        for _, v in ipairs(Target) do
+            local TargetRoot = GetRoot(v)
+            local TargetPos = TargetRoot.Position
             Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 10, 0))
-            wait(0.1) -- Teleport every 0.1 second
-        until tick() - starttime >= 3
+        end
+        wait() -- Let the script yield briefly before checking the time again
+    until tick() - startTime >= 3
 
-        Root.CFrame = OldPos -- Return to original position
-    end
+    Root.CFrame = OldPos -- Return to original position after 3 seconds
 end)
 
 
