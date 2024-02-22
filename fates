@@ -3889,7 +3889,7 @@ AddCommand("fling", {"stan"}, "teleports to a player for a few seconds and retur
     end
 end)
 
-AddCommand("fling", {"stan"}, "teleports to a player repeatedly for a few seconds", {}, function(Caller, Args)
+AddCommand("fling", {"FLING"}, {"/e fling"}, "teleports to a player repeatedly for a few seconds", {}, function(Caller, Args)
     local Target = GetPlayer(Args[1])
     if not Target then
         return
@@ -3905,12 +3905,11 @@ AddCommand("fling", {"stan"}, "teleports to a player repeatedly for a few second
             local TargetPos = TargetRoot.Position
             Root.CFrame = CFrame.new(TargetPos + Vector3.new(0, 5, 0))
         end
-        wait() -- Let the script yield briefly before checking the time again
+        wait()
     until tick() - startTime >= 3
 
-    Root.CFrame = OldPos -- Return to original position after 3 seconds
+    Root.CFrame = OldPos
 end)
-
 
 AddCommand("antitkill", {}, "anti tkill :troll:", {3}, function(Caller, Args)
     Destroy(GetCharacter()["Right Arm"]);
